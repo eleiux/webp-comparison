@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>.webp image comparisons</title>
+    <style>
+        h4{
+            font-family:Arial;
+            text-align:center;
+        }
+        table{
+            margin:auto;
+            padding:0px;
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+        table img{
+            display:block;
+            max-height:250px;
+            margin:auto;
+          
+        }
+        td, th{
+            text-align: center;  
+            font-family:Arial;
+            border-collapse: collapse;
+        }
+        tr{
+            height:250px;
+        }
+        td:not(:nth-of-type(2)), th{
+            padding:10px;
+            border:3px solid lightgray;
+        }
+        #donut-stats{
+            display:flex;
+            align-items:center;
+            justify-content: center; 
+            width:600px;
+            margin: auto;
+            padding-top:40px;
+        }
+        #donut-text{
+            font-family:Arial;
+            text-align:center;
+            transform:translateY(-250px);
+        }
+    </style>
+    <script type="importmap">
+    {
+      "imports": {
+        "d3": "https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm"
+      }
+    }
+    </script>
+</head>
+<body>
+    <h4>A simple list of how image sizes change when converting to webp. For a small project to help a minecraft server I play on (svanilla - IP: <a href="corn.gg">corn.gg</a>)</h4>
+    <table>
+        <th>Name</th><th width="fit-content">Image</th><th>Size Before</th><th>Size After</th><th>Percentage Saved</th>
+        <tr>
+            <td>
+                <p>bg1</p>
+            </td>
+            <td>
+                <img src="webp-backgrounds/bg1.webp">
+            </td>
+            <td>
+                <p>4524 KB</p>
+            </td>
+            <td>
+                <p>913 KB</p>
+            </td>
+            <td>
+                <p>79.9%</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>bg3</p>
+            </td>
+            <td>
+                <img src="webp-backgrounds/bg3.webp">
+            </td>
+            <td>
+                <p>3617 KB</p>
+            </td>
+            <td>
+                <p>570 KB</p>
+            </td>
+            <td>
+                <p>84.24%</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>bg4</p>
+            </td>
+            <td>
+                <img src="webp-backgrounds/bg4.webp">
+            </td>
+            <td>
+                <p>18927 KB</p>
+            </td>
+            <td>
+                <p>4083 KB</p>
+            </td>
+            <td>
+                <p></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>bg5</p>
+            </td>
+            <td>
+                <img src="webp-backgrounds/bg5.webp">
+            </td>
+            <td>
+                <p>13041 KB</p>
+            </td>
+            <td>
+                <p>1080 KB</p>
+            </td>
+            <td>
+                <p></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>bg6</p>
+            </td>
+            <td>
+                <img src="webp-backgrounds/bg6.webp">
+            </td>
+            <td>
+                <p>8222 KB</p>
+            </td>
+            <td>
+                <p>1111 KB</p>
+            </td>
+            <td>
+                <p></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>bg7</p>
+            </td>
+            <td>
+                <img src="webp-backgrounds/bg7.webp">
+            </td>
+            <td>
+                <p>10156 KB</p>
+            </td>
+            <td>
+                <p>1296 KB</p>
+            </td>
+            <td>
+                <p></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>bg8</p>
+            </td>
+            <td>
+                <img src="webp-backgrounds/bg8.webp">
+            </td>
+            <td>
+                <p>10185 KB</p>
+            </td>
+            <td>
+                <p>1359 KB</p>
+            </td>
+            <td>
+                <p></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>bg9</p>
+            </td>
+            <td>
+                <img src="webp-backgrounds/bg9.webp">
+            </td>
+            <td>
+                <p>11141 KB</p>
+            </td>
+            <td>
+                <p>1745 KB</p>
+            </td>
+            <td>
+                <p></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>bg10</p>
+            </td>
+            <td>
+                <img src="webp-backgrounds/bg10.webp">
+            </td>
+            <td>
+                <p>11334 KB</p>
+            </td>
+            <td>
+                <p>1462 KB</p>
+            </td>
+            <td>
+                <p></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>bg11</p>
+            </td>
+            <td>
+                <img src="webp-backgrounds/bg11.webp">
+            </td>
+            <td>
+                <p>11308 KB</p>
+            </td>
+            <td>
+                <p>1588 KB</p>
+            </td>
+            <td>
+                <p></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>bg12</p>
+            </td>
+            <td>
+                <img src="webp-backgrounds/bg12.webp">
+            </td>
+            <td>
+                <p>10890 KB</p>
+            </td>
+            <td>
+                <p>1735 KB</p>
+            </td>
+            <td>
+                <p></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>bg13</p>
+            </td>
+            <td>
+                <img src="webp-backgrounds/bg13.webp">
+            </td>
+            <td>
+                <p>11728 KB</p>
+            </td>
+            <td>
+                <p>2132 KB</p>
+            </td>
+            <td>
+                <p></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>bg14</p>
+            </td>
+            <td>
+                <img src="webp-backgrounds/bg14.webp">
+            </td>
+            <td>
+                <p>10882 KB</p>
+            </td>
+            <td>
+                <p>1669 KB</p>
+            </td>
+            <td>
+                <p></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>bg15</p>
+            </td>
+            <td>
+                <img src="webp-backgrounds/bg15.webp">
+            </td>
+            <td>
+                <p>781 KB</p>
+            </td>
+            <td>
+                <p>485 KB</p>
+            </td>
+            <td>
+                <p></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>bg16</p>
+            </td>
+            <td>
+                <img src="webp-backgrounds/bg16.webp">
+            </td>
+            <td>
+                <p>2533 KB</p>
+            </td>
+            <td>
+                <p>609 KB</p>
+            </td>
+            <td>
+                <p></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>bg17</p>
+            </td>
+            <td>
+                <img src="webp-backgrounds/bg17.webp">
+            </td>
+            <td>
+                <p>12524 KB</p>
+            </td>
+            <td>
+                <p>901 KB</p>
+            </td>
+            <td>
+                <p></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>bg18</p>
+            </td>
+            <td>
+                <img src="webp-backgrounds/bg18.webp">
+            </td>
+            <td>
+                <p>3631 KB</p>
+            </td>
+            <td>
+                <p>788 KB</p>
+            </td>
+            <td>
+                <p></p>
+            </td>
+        </tr>
+         <tr>
+            <td>
+                <p>bg19</p>
+            </td>
+            <td>
+                <img src="webp-backgrounds/bg19.webp">
+            </td>
+            <td>
+                <p>4035 KB</p>
+            </td>
+            <td>
+                <p>790 KB</p>
+            </td>
+            <td>
+                <p></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>bg20</p>
+            </td>
+            <td>
+                <img src="webp-backgrounds/bg20.webp">
+            </td>
+            <td>
+                <p>1505 KB</p>
+            </td>
+            <td>
+                <p>353 KB</p>
+            </td>
+            <td>
+                <p></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>bg21</p>
+            </td>
+            <td>
+                <img src="webp-backgrounds/bg21.webp">
+            </td>
+            <td>
+                <p>3548 KB</p>
+            </td>
+            <td>
+                <p>1883 KB</p>
+            </td>
+            <td>
+                <p></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>bg22</p>
+            </td>
+            <td>
+                <img src="webp-backgrounds/bg22.webp">
+            </td>
+            <td>
+                <p>2901 KB</p>
+            </td>
+            <td>
+                <p>572 KB</p>
+            </td>
+            <td>
+                <p></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>bg23</p>
+            </td>
+            <td>
+                <img src="webp-backgrounds/bg23.webp">
+            </td>
+            <td>
+                <p>2081 KB</p>
+            </td>
+            <td>
+                <p>1041 KB</p>
+            </td>
+            <td>
+                <p></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>bg24</p>
+            </td>
+            <td>
+                <img src="webp-backgrounds/bg24.webp">
+            </td>
+            <td>
+                <p>5381 KB</p>
+            </td>
+            <td>
+                <p>729 KB</p>
+            </td>
+            <td>
+                <p></p>
+            </td>
+        </tr>
+    </table>
+    <br id="land-on">
+    <div id="donut-stats">
+        <!--dynamically injected with d3 script-->
+    </div>
+    <h1 id="donut-text">
+
+    </h1>
+
+    <script>
+                // Grab each row that has at least 5 <td>s and pull out the raw numbers
+        function collectRows() {
+        const table = document.querySelector('table');
+        if (!table) return [];
+
+        return Array.from(table.querySelectorAll('tr'))
+            .map(row => {
+            const cells = row.querySelectorAll('td');
+            if (cells.length < 5) return null;
+
+            const orig    = parseInt(cells[2].textContent.replace(/\D/g, ''), 10);
+            const reduced = parseInt(cells[3].textContent.replace(/\D/g, ''), 10);
+            return { row, orig, reduced };
+            })
+            .filter(x => x);
+        }
+
+        const rowsData = collectRows();
+
+        // Compute % and inject into the 5th cell’s <p>
+        rowsData.forEach(({ row, orig, reduced }) => {
+        const pct = ((orig - reduced) / orig) * 100;
+        
+        const fifthCell = row.querySelectorAll('td')[4];
+        let p = fifthCell.querySelector('p');
+        if (!p) {
+            p = document.createElement('p');
+            fifthCell.appendChild(p);
+        }
+        
+        p.textContent = `${pct.toFixed(2)}%`;
+        });
+    </script>
+
+<h1 id="donut-text"></h1>
+<div id="donut-stats"></div>
+
+<script type="module">
+  import * as d3 from 'd3';
+
+  // 1) Grab every <p> in the 5th <td> of each row, parse its "%", average them
+  const percentNodes = Array.from(
+    document.querySelectorAll('table tr td:nth-child(5) p')
+  );
+  const rawNumbers = percentNodes
+    .map(p => parseFloat(p.textContent.replace('%', '')))
+    .filter(n => !isNaN(n));
+  const avgPct = rawNumbers.reduce((sum, n) => sum + n, 0) / rawNumbers.length;
+  const pct = avgPct / 100;  // fraction for the arc
+
+  // Log the average
+  console.log(`Average reduction percentage: ${avgPct.toFixed(2)}%`);
+
+  // Insert the average into the <h1 id="donut-text">
+  const h1 = document.getElementById('donut-text');
+  if (h1) {
+    h1.textContent = `${avgPct.toFixed(2)}% space saved`;
+  }
+
+  // 2) D3 donut config
+  const width = 200;
+  const height = 200;
+  const radius = Math.min(width, height) / 2;
+  const innerRadius = radius * 0.5;
+  const outerRadius = radius * 0.8;
+  const cornerRadius = 10;
+
+  const svg = d3.select('#donut-stats')
+    .append('svg')
+      .attr('width', width)
+      .attr('height', height)
+    .append('g')
+      .attr('transform', `translate(${width/2},${height/2})`);
+
+  // background ring
+  const bgArc = d3.arc()
+    .innerRadius(innerRadius)
+    .outerRadius(outerRadius)
+    .startAngle(0)
+    .endAngle(2 * Math.PI);
+
+  svg.append('path')
+    .attr('d', bgArc())
+    .attr('fill', '#d3d3d3');
+
+  // foreground arc
+  const fgArc = d3.arc()
+    .innerRadius(innerRadius)
+    .outerRadius(outerRadius)
+    .startAngle(0)
+    .cornerRadius(cornerRadius);
+
+  const fg = svg.append('path')
+    .datum({ endAngle: 0 })
+    .attr('fill', '#FFF085')
+    .attr('d', fgArc);
+
+  // animate to the true average
+  fg.transition()
+    .duration(1200)
+    .attrTween('d', d => {
+      const interpolate = d3.interpolate(d.endAngle, pct * 2 * Math.PI);
+      return t => {
+        d.endAngle = interpolate(t);
+        return fgArc(d);
+      };
+    });
+
+  // center label shows the rounded average percent
+  svg.append('text')
+    .attr('text-anchor', 'middle')
+    .attr('dy', '0.35em')
+    .style('font-family', 'Arial')
+    .style('font-size', '24px')
+    .style('fill', '#FFF')
+    .text(`${avgPct.toFixed(0)}%`);
+</script>
+
+
+
+
+</body>
+</html>
