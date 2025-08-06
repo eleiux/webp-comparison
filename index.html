@@ -26,12 +26,19 @@
             font-family:Arial;
             border-collapse: collapse;
         }
-        tr{
+        tr:not(:first-of-type){
             height:250px;
         }
         td:not(:nth-of-type(2)), th{
             padding:10px;
             border:3px solid lightgray;
+        }
+        button{
+            padding:10px;
+            border:none;
+            cursor:pointer;
+            background-color:lightgray;
+            border-radius:10px;
         }
         #donut-stats{
             display:flex;
@@ -58,7 +65,7 @@
 <body>
     <h4>A simple list of how image sizes change when converting to webp. For a small project to help a minecraft server I play on (svanilla - IP: <a href="corn.gg">corn.gg</a>)</h4>
     <table>
-        <th>Name</th><th width="fit-content">Image</th><th>Size Before</th><th>Size After</th><th>Percentage Saved</th>
+        <th>Title</th><th width="fit-content">Image</th><th>Size Before</th><th>Size After</th><th>Percentage Saved</th>
         <tr>
             <td>
                 <p>bg1</p>
@@ -455,9 +462,59 @@
     <div id="donut-stats">
         <!--dynamically injected with d3 script-->
     </div>
-    <h1 id="donut-text">
 
-    </h1>
+    <a style="text-align:center; font-size:25px; font-family:Arial; padding:40px; width:100%; display:block;" href="https://github.com/eleiux/webp-comparison/tree/main/webp-backgrounds">Content on github: https://github.com/eleiux/webp-comparison/tree/main/webp-backgrounds</a>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const baseUrl = 'https://eleiux.github.io/webp-comparison/webp-backgrounds/';
+  const table = document.querySelector('table');
+  if (!table) return;
+
+  table.querySelectorAll('tr').forEach(row => {
+    const cells = row.querySelectorAll('td');
+    if (cells.length === 0) return;
+
+    // first <td> contains a placeholder like "bg15"
+    const placeholder = cells[0].textContent.trim();
+    if (!/^bg\d+$/.test(placeholder)) return;
+
+    const filename = placeholder + '.webp';
+
+    // create download button
+    const btn = document.createElement('button');
+    btn.textContent = `${placeholder} ⭳`;
+    btn.addEventListener('click', async () => {
+      try {
+        // fetch the image as a blob
+        const res = await fetch(baseUrl + filename);
+        if (!res.ok) throw new Error(res.statusText);
+        const blob = await res.blob();
+
+        // create a blob URL and trigger download
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(blobUrl);
+      } catch (err) {
+        console.error('Download failed for', filename, err);
+      }
+    });
+
+    // replace the placeholder text with the button
+    cells[0].textContent = '';
+    cells[0].appendChild(btn);
+  });
+});
+</script>
+
+
+
+
 
     <script>
                 // Grab each row that has at least 5 <td>s and pull out the raw numbers
@@ -494,8 +551,6 @@
         });
     </script>
 
-<h1 id="donut-text"></h1>
-<div id="donut-stats"></div>
 
 <script type="module">
   import * as d3 from 'd3';
@@ -513,11 +568,6 @@
   // Log the average
   console.log(`Average reduction percentage: ${avgPct.toFixed(2)}%`);
 
-  // Insert the average into the <h1 id="donut-text">
-  const h1 = document.getElementById('donut-text');
-  if (h1) {
-    h1.textContent = `${avgPct.toFixed(2)}% space saved`;
-  }
 
   // 2) D3 donut config
   const width = 200;
@@ -569,13 +619,36 @@
     });
 
   // center label shows the rounded average percent
-  svg.append('text')
-    .attr('text-anchor', 'middle')
-    .attr('dy', '0.35em')
-    .style('font-family', 'Arial')
-    .style('font-size', '24px')
-    .style('fill', '#FFF')
-    .text(`${avgPct.toFixed(0)}%`);
+  // 1) define a blur filter
+const defs = svg.append('defs');
+defs.append('filter')
+  .attr('id', 'blur-bg')
+  .append('feGaussianBlur')
+    .attr('in', 'SourceGraphic')
+    .attr('stdDeviation', 3);  // tweak for more/less blur
+
+// 2) append your text
+const text = svg.append('text')
+  .attr('text-anchor', 'middle')
+  .attr('dy', '0.35em')
+  .style('font-family', 'Arial')
+  .style('font-size', '24px')
+  .style('fill', '#000')
+  .text(`${avgPct.toFixed(0)}% reduced`);
+
+// 3) measure it
+const padding = 5;
+const bbox = text.node().getBBox();
+
+// 4) insert a blurred white rect behind, with padding
+svg.insert('rect', 'text')
+  .attr('x', bbox.x - padding)
+  .attr('y', bbox.y - padding)
+  .attr('width',  bbox.width + padding * 2)
+  .attr('height', bbox.height + padding * 2)
+  .style('fill', 'white')
+  .style('fill-opacity', 0.6)
+  .attr('filter', 'url(#blur-bg)');
 </script>
 
 
