@@ -53,6 +53,10 @@
             text-align:center;
             transform:translateY(-250px);
         }
+        .cent-content{
+            text-align:center; font-family:Arial; padding:40px; width:90%; display:block;
+            margin:auto;
+        }
     </style>
     <script type="importmap">
     {
@@ -463,9 +467,60 @@
         <!--dynamically injected with d3 script-->
     </div>
 
-    <a style="text-align:center; font-size:25px; font-family:Arial; padding:40px; width:100%; display:block;" href="https://github.com/eleiux/webp-comparison/tree/main/webp-backgrounds">Content on github: https://github.com/eleiux/webp-comparison/tree/main/webp-backgrounds</a>
+    
 
-<script>
+    <div class="cent-content">
+        <a style="font-size:25px;" href="https://github.com/eleiux/webp-comparison/tree/main/webp-backgrounds">Content on github: https://github.com/eleiux/webp-comparison/tree/main/webp-backgrounds</a>
+        <p>if you don't want to download, paste "https://pub-d5248ecedccf4da6ad39e4b0750001ba.r2.dev/webp-backgrounds/FILENAME.webp" into wherever your images go, where files are kept on Cloudflare's R2 Public Storage.</p>
+        <button id="download-bg-zip">Download All images from here (ZIP)</button>
+    </div>
+
+
+
+<!-- Include JSZip from CDN -->
+<script src="https://cdn.jsdelivr.net/npm/jszip@3/dist/jszip.min.js"></script>
+
+<script>//JSZip content
+  document.getElementById('download-bg-zip').addEventListener('click', async () => {
+    const zip = new JSZip();
+    const baseURL = 'https://eleiux.github.io/webp-comparison/webp-backgrounds/';
+    const files = [
+      'bg1.webp','bg3.webp','bg4.webp','bg5.webp','bg6.webp','bg7.webp','bg8.webp','bg9.webp',
+      'bg10.webp','bg11.webp','bg12.webp','bg13.webp','bg14.webp','bg15.webp','bg16.webp',
+      'bg17.webp','bg18.webp','bg19.webp','bg20.webp','bg21.webp','bg22.webp','bg23.webp','bg24.webp'
+    ];
+
+    // Fetch each image and add to the zip
+    for (const name of files) {
+      try {
+        const res = await fetch(baseURL + name);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const blob = await res.blob();
+        zip.file(name, blob);
+      } catch (err) {
+        console.error(`Failed to fetch ${name}:`, err);
+      }
+    }
+
+    // Generate the zip and trigger download
+    try {
+      const content = await zip.generateAsync({ type: 'blob' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(content);
+      a.download = 'webp-backgrounds.zip';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      // cleanup
+      URL.revokeObjectURL(a.href);
+    } catch (err) {
+      console.error('Could not generate zip:', err);
+    }
+  });
+</script>
+
+    
+<script>//downloads for each individual item in the first column
 document.addEventListener('DOMContentLoaded', () => {
   const baseUrl = 'https://eleiux.github.io/webp-comparison/webp-backgrounds/';
   const table = document.querySelector('table');
@@ -516,7 +571,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    <script>
+    <script>//parsing the averages in fifth column
                 // Grab each row that has at least 5 <td>s and pull out the raw numbers
         function collectRows() {
         const table = document.querySelector('table');
@@ -552,7 +607,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </script>
 
 
-<script type="module">
+<script type="module">//for the chart/diagram/donut display on the bottom
   import * as d3 from 'd3';
 
   // 1) Grab every <p> in the 5th <td> of each row, parse its "%", average them
